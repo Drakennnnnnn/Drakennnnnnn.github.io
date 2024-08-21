@@ -3,14 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> :$</title>
+    <title>Página con Aceptación de Cookies</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;  
+            overflow: hidden;
+            display: hidden; /* Oculta la página hasta que se acepten las cookies */
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #cookieModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #cookieModalContent {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        #cookieModal button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         .full-page-image {
@@ -27,17 +68,46 @@
     </style>
 </head>
 <body>
-    <img src="https://steamuserimages-a.akamaihd.net/ugc/1020570173245289665/1FE233451BBA38C85B3F20768511C0CAFF0E7FBC/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" alt="MDN" class="full-page-image" />
-    <audio id="audio">
-        <source src="https://www.dropbox.com/scl/fi/i77db5tzegchm3fo41qub/audio.mp3?rlkey=sy9vjpjh2267powxbth1nczxq&st=9oy8hk6m&dl=1" type="audio/mpeg">
-        Tu navegador no soporta el elemento de audio.
-    </audio>
+    <div class="container">
+        <div id="cookieModal">
+            <div id="cookieModalContent">
+                <h2>Aceptación de Cookies</h2>
+                <p>Este sitio web utiliza cookies para mejorar tu experiencia. ¿Aceptas el uso de cookies?</p>
+                <button id="acceptCookiesBtn">Aceptar</button>
+            </div>
+        </div>
+        <img src="https://steamuserimages-a.akamaihd.net/ugc/1020570173245289665/1FE233451BBA38C85B3F20768511C0CAFF0E7FBC/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" alt="MDN" class="full-page-image" />
+        <audio id="audio">
+            <source src="https://www.dropbox.com/scl/fi/i77db5tzegchm3fo41qub/audio.mp3?rlkey=sy9vjpjh2267powxbth1nczxq&st=9oy8hk6m&raw=1" type="audio/mpeg">
+            Tu navegador no soporta el elemento de audio.
+        </audio>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var audio = document.getElementById("audio");
-            audio.play();
-            audio.loop = true; // Hace que la canción se repita
+            var cookieModal = document.getElementById("cookieModal");
+            var acceptCookiesBtn = document.getElementById("acceptCookiesBtn");
+
+            // Mostrar modal si no se han aceptado las cookies
+            if (!localStorage.getItem("cookiesAccepted")) {
+                cookieModal.style.display = "flex";
+            } else {
+                // Si ya se aceptaron las cookies, ocultar el modal y mostrar el contenido de la página
+                document.body.style.display = "block";
+                var audio = document.getElementById("audio");
+                audio.play();
+                audio.loop = true;
+            }
+
+            // Al aceptar las cookies
+            acceptCookiesBtn.addEventListener("click", function() {
+                localStorage.setItem("cookiesAccepted", "true");
+                cookieModal.style.display = "none";
+                document.body.style.display = "block"; // Mostrar el contenido de la página
+                var audio = document.getElementById("audio");
+                audio.play();
+                audio.loop = true; // Repetir la canción
+            });
         });
     </script>
 </body>
